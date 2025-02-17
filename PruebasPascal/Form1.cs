@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Text.RegularExpressions;
 
 namespace PruebasPascal
 {
@@ -57,7 +58,7 @@ namespace PruebasPascal
             }
         }
 
-        private void UpdateStatus(string content)
+        /*private void UpdateStatus(string content)
         {
             if (wordCountLabel == null || lineCountLabel == null)
             {
@@ -67,6 +68,22 @@ namespace PruebasPascal
 
             int wordCount = content.Split(new char[] { ' ', '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries).Length;
             int lineCount = content.Split('\n').Length;
+
+            wordCountLabel.Text = $"Palabras: {wordCount}";
+            lineCountLabel.Text = $"Líneas: {lineCount}";
+        }*/
+
+        private void UpdateStatus(string content)
+        {
+            if (wordCountLabel == null || lineCountLabel == null)
+            {
+                MessageBox.Show("Las etiquetas del StatusStrip no están inicializadas.");
+                return;
+            }
+
+            // Expresión regular para identificar palabras (maneja palabras separadas por espacios, signos, etc.)
+            int wordCount = Regex.Matches(content, @"\b\w+\b").Count;
+            int lineCount = content.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).Length;
 
             wordCountLabel.Text = $"Palabras: {wordCount}";
             lineCountLabel.Text = $"Líneas: {lineCount}";
