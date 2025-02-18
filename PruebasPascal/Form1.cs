@@ -22,6 +22,7 @@ namespace PruebasPascal
 
         public Form1()
         {
+            sadasdasdToolStripMenuItem.Click += AbrirArchivoPascal();
             InitializeComponent();
             CrearNuevaPestaña();
         }
