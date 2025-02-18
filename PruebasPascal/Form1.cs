@@ -23,13 +23,12 @@ namespace PruebasPascal
         {
             InitializeComponent();
             sadasdasdToolStripMenuItem.Click += OpenFile;
-            if (richTextBox1 == null) richTextBox1 = new RichTextBox();
-            if (statusStrip1 == null) statusStrip1 = new StatusStrip();
-            if (wordCountLabel == null) wordCountLabel = new ToolStripStatusLabel("Palabras: 0");
-            if (lineCountLabel == null) lineCountLabel = new ToolStripStatusLabel("Líneas: 0");
+            //richTextBox1.Font = new Font("Consolas", 10); // Fuente monoespaciada
+            //richTextBox1.BorderStyle = BorderStyle.FixedSingle; // Borde para mejor visibilidad
 
-            statusStrip1.Items.Add(wordCountLabel);
-            statusStrip1.Items.Add(lineCountLabel);
+            //richTextBox1.TextChanged += (s, e) => richTextBox1.Invalidate(); // Redibujar al cambiar texto
+            //richTextBox1.Paint += DibujarEstructura; // Dibujar indentación dentro del RichTextBox
+
         }
 
         private void OpenFile(object sender, EventArgs e)
@@ -135,6 +134,43 @@ namespace PruebasPascal
                 richTextBox1.SelectionColor = color;
             }
         }
+        //private void DibujarEstructura(object sender, PaintEventArgs e)
+        //{
+        //    Graphics g = e.Graphics;
+        //    g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+        //    Pen pen = new Pen(Color.DarkGreen, 1) { DashPattern = new float[] { 3, 3 } }; // Línea punteada verde oscuro
+
+        //    int lineHeight = TextRenderer.MeasureText("X", richTextBox1.Font).Height; // Altura de línea
+        //    int indentWidth = 12; // Espaciado entre líneas de indentación
+        //    int xStart = 8; // Margen izquierdo para indentación
+        //    int y = 5; // Posición inicial en Y
+
+        //    for (int i = 0; i < richTextBox1.Lines.Length; i++)
+        //    {
+        //        string line = richTextBox1.Lines[i];
+        //        int indentLevel = ContarIndentacion(line);
+
+        //        // Dibujar líneas de indentación dentro del RichTextBox
+        //        for (int j = 0; j < indentLevel; j++)
+        //        {
+        //            g.DrawLine(pen, xStart + j * indentWidth, y, xStart + j * indentWidth, y + lineHeight);
+        //        }
+
+        //        y += lineHeight; // Moverse a la siguiente línea
+        //    }
+        //}
+
+        //private int ContarIndentacion(string line)
+        //{
+        //    int count = 0;
+        //    foreach (char c in line)
+        //    {
+        //        if (c == ' ') count++; // Cuenta espacios
+        //        else if (c == '\t') count += 4; // Cuenta tabulaciones como 4 espacios
+        //        else break; // Detiene cuando encuentra un carácter que no es espacio
+        //    }
+        //    return count / 4; // Cada 4 espacios equivalen a 1 nivel de indentación
+        //}
 
         private void richTextBox1_TextChanged(object sender, EventArgs e)
         {
