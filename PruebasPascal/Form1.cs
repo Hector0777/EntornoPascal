@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using System.Text.RegularExpressions;
 namespace PruebasPascal
 {
     public partial class Form1 : Form
@@ -22,8 +22,9 @@ namespace PruebasPascal
 
         public Form1()
         {
-            sadasdasdToolStripMenuItem.Click += AbrirArchivoPascal();
+            
             InitializeComponent();
+            sadasdasdToolStripMenuItem.Click += menuAbrir_Click;
             CrearNuevaPestaña();
         }
 
