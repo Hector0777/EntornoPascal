@@ -18,43 +18,48 @@ namespace PruebasPascal
         //private StatusStrip statusStrip1;
         private ToolStripStatusLabel wordCountLabel;
         private ToolStripStatusLabel lineCountLabel;
+        private int tabCounter = 1;
+
         public Form1()
         {
             InitializeComponent();
-            sadasdasdToolStripMenuItem.Click += OpenFile;
-            if (richTextBox1 == null) richTextBox1 = new RichTextBox();
-            if (statusStrip1 == null) statusStrip1 = new StatusStrip();
-            if (wordCountLabel == null) wordCountLabel = new ToolStripStatusLabel("Palabras: 0");
-            if (lineCountLabel == null) lineCountLabel = new ToolStripStatusLabel("Líneas: 0");
-
-            statusStrip1.Items.Add(wordCountLabel);
-            statusStrip1.Items.Add(lineCountLabel);
+            CrearNuevaPestaña();
         }
 
-        private void OpenFile(object sender, EventArgs e)
+        private void CrearNuevaPestaña(string contenido = "")
+        {
+            TabPage nuevaPestaña = new TabPage("Nueva Pestaña " + tabCounter);
+            RichTextBox richTextBox = new RichTextBox
+            {
+                Dock = DockStyle.Fill,
+                Font = new Font("Consolas", 12),
+                Text = string.IsNullOrEmpty(contenido) ? "program Ejemplo;\nbegin\n\nend." : contenido
+            };
+
+            nuevaPestaña.Controls.Add(richTextBox);
+            tabControl1.TabPages.Add(nuevaPestaña);
+            tabControl1.SelectedTab = nuevaPestaña;
+            tabCounter++;
+        }
+
+        private void AbrirArchivoPascal()
         {
             OpenFileDialog openFileDialog = new OpenFileDialog
             {
                 Filter = "Archivos Pascal (*.pas)|*.pas",
-                Title = "Seleccionar archivo Pascal"
+                Title = "Abrir archivo Pascal"
             };
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                string fileContent = File.ReadAllText(openFileDialog.FileName);
-
-                if (richTextBox1 != null)
-                {
-                    richTextBox1.Text = fileContent;
-                }
-                else
-                {
-                    MessageBox.Show("El RichTextBox no está inicializado.");
-                    return;
-                }
-
-                UpdateStatus(fileContent);
+                string contenido = File.ReadAllText(openFileDialog.FileName);
+                CrearNuevaPestaña(contenido);
             }
+        }
+
+        private void menuAbrir_Click(object sender, EventArgs e)
+        {
+            AbrirArchivoPascal();
         }
 
         private void UpdateStatus(string content)
