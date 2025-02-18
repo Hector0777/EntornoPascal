@@ -61,25 +61,36 @@ namespace PruebasPascal
         private void AplicarResaltado(RichTextBox rtb)
         {
             ColorConfig config = (ColorConfig)tabControl1.SelectedTab.Tag;
+
+            // Palabras reservadas
             string[] palabrasReservadas = { "program", "begin", "end", "var", "if", "then", "else", "while", "do", "procedure", "function" };
-            Regex regexReservadas = new Regex($"\\b({string.Join("|", palabrasReservadas)})\\b", RegexOptions.IgnoreCase);
+            Regex regexReservadas = new Regex($@"\b({string.Join("|", palabrasReservadas)})\b", RegexOptions.IgnoreCase);
+
+            // Comentarios
             Regex regexComentarios = new Regex(@"(\{.*?\}|//.*?$)", RegexOptions.Multiline);
-            Regex regexCadenas = new Regex("\"(?:[^\"]|\"\")*?\"");
+
+            // Cadenas de texto
+            Regex regexCadenas = new Regex(@"'([^']*)'", RegexOptions.Singleline);
 
             int selStart = rtb.SelectionStart;
             rtb.SelectAll();
             rtb.SelectionColor = Color.Black;
 
+            // Resaltar las palabras reservadas
             foreach (Match m in regexReservadas.Matches(rtb.Text))
             {
                 rtb.Select(m.Index, m.Length);
                 rtb.SelectionColor = config.Reservadas;
             }
+
+            // Resaltar los comentarios
             foreach (Match m in regexComentarios.Matches(rtb.Text))
             {
                 rtb.Select(m.Index, m.Length);
                 rtb.SelectionColor = config.Comentarios;
             }
+
+            // Resaltar las cadenas de texto
             foreach (Match m in regexCadenas.Matches(rtb.Text))
             {
                 rtb.Select(m.Index, m.Length);
