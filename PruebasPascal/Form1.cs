@@ -73,6 +73,11 @@ namespace PruebasPascal
             lineCountLabel.Text = $"Líneas: {lineCount}";
         }*/
 
+
+        private void sadasdasdToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
         private void UpdateStatus(string content)
         {
             if (wordCountLabel == null || lineCountLabel == null)
@@ -81,17 +86,59 @@ namespace PruebasPascal
                 return;
             }
 
-            // Expresión regular para identificar palabras (maneja palabras separadas por espacios, signos, etc.)
+            // Expresión regular para identificar palabras (evita contar caracteres sueltos como "_")
             int wordCount = Regex.Matches(content, @"\b\w+\b").Count;
             int lineCount = content.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).Length;
 
             wordCountLabel.Text = $"Palabras: {wordCount}";
             lineCountLabel.Text = $"Líneas: {lineCount}";
+
+            // Aplicar resaltado de sintaxis
+            HighlightSyntax();
         }
 
-        private void sadasdasdToolStripMenuItem_Click(object sender, EventArgs e)
+        private void HighlightSyntax()
         {
+            if (richTextBox1 == null) return;
 
+            // Guardar la posición del cursor para no interferir con la edición
+            int selectionStart = richTextBox1.SelectionStart;
+            int selectionLength = richTextBox1.SelectionLength;
+
+            // Desactivar la actualización visual para mejorar rendimiento
+            richTextBox1.SuspendLayout();
+
+            // Resetear el color de todo el texto
+            richTextBox1.SelectAll();
+            richTextBox1.SelectionColor = Color.Black;
+
+            // Resaltar comentarios
+            HighlightPattern(@"\{.*?\}|\(\*.*?\*\)|//.*", Color.Green); // Comentarios Pascal
+
+            // Resaltar palabras clave de Pascal
+            string[] keywords = { "begin", "end", "program", "var", "procedure", "function", "const", "type", "if", "then", "else", "while", "do", "for", "repeat", "until", "case", "of", "record", "array", "set", "uses", "unit", "interface", "implementation", "with", "try", "except", "finally", "class", "private", "public", "protected", "published", "inherited", "override", "virtual", "constructor", "destructor" };
+            HighlightPattern(@"\b(" + string.Join("|", keywords) + @")\b", Color.Blue);
+
+            // Restaurar selección y actualizar
+            richTextBox1.SelectionStart = selectionStart;
+            richTextBox1.SelectionLength = selectionLength;
+            richTextBox1.SelectionColor = Color.Black;
+            richTextBox1.ResumeLayout();
+        }
+
+        private void HighlightPattern(string pattern, Color color)
+        {
+            Regex regex = new Regex(pattern, RegexOptions.IgnoreCase);
+            foreach (Match match in regex.Matches(richTextBox1.Text))
+            {
+                richTextBox1.Select(match.Index, match.Length);
+                richTextBox1.SelectionColor = color;
+            }
+        }
+
+        private void richTextBox1_TextChanged(object sender, EventArgs e)
+        {
+            HighlightSyntax();
         }
     }
 }
