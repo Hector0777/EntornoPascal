@@ -9,20 +9,17 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
+
 namespace PruebasPascal
 {
     public partial class Form1 : Form
     {
-        //private ToolStripMenuItem sadasdasdToolStripMenuItem;
-        //private RichTextBox richTextBox1;
-        //private StatusStrip statusStrip1;
         private ToolStripStatusLabel wordCountLabel;
         private ToolStripStatusLabel lineCountLabel;
         private int tabCounter = 1;
 
         public Form1()
         {
-            
             InitializeComponent();
             sadasdasdToolStripMenuItem.Click += menuAbrir_Click;
             CrearNuevaPestaña();
@@ -87,6 +84,11 @@ namespace PruebasPascal
         private void button3_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
         }
     }
 }
