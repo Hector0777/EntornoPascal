@@ -21,6 +21,15 @@ namespace PruebasPascal
         public Form1()
         {
             InitializeComponent();
+
+            // Crear las etiquetas de conteo de palabras y líneas
+            wordCountLabel = new ToolStripStatusLabel();
+            lineCountLabel = new ToolStripStatusLabel();
+
+            // Añadir las etiquetas al StatusStrip
+            statusStrip1.Items.Add(wordCountLabel);
+            statusStrip1.Items.Add(lineCountLabel);
+
             sadasdasdToolStripMenuItem.Click += menuAbrir_Click;
             tabControl1.DrawMode = TabDrawMode.OwnerDrawFixed;
             tabControl1.DrawItem += TabControl1_DrawItem;
@@ -131,6 +140,8 @@ namespace PruebasPascal
                 Text = string.IsNullOrEmpty(contenido) ? "program Ejemplo;\nbegin\n\nend." : contenido
             };
 
+            richTextBox.TextChanged += (s, e) => UpdateStatus(richTextBox.Text);
+
             nuevaPestaña.Controls.Add(richTextBox);
             tabControl1.TabPages.Add(nuevaPestaña);
             tabControl1.SelectedTab = nuevaPestaña;
@@ -152,6 +163,10 @@ namespace PruebasPascal
             {
                 string contenido = File.ReadAllText(openFileDialog.FileName);
                 CrearNuevaPestaña(contenido);
+
+                // Llamar a UpdateStatus para el contenido cargado
+                RichTextBox rtb = (RichTextBox)tabControl1.SelectedTab.Controls[0];
+                UpdateStatus(rtb.Text);
             }
         }
 
