@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.sadasdasdToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpProvider1 = new System.Windows.Forms.HelpProvider();
@@ -46,6 +47,7 @@
             // 
             // menuStrip1
             // 
+            this.menuStrip1.BackColor = System.Drawing.Color.Linen;
             this.menuStrip1.GripMargin = new System.Windows.Forms.Padding(2, 2, 0, 2);
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -79,15 +81,17 @@
             // 
             // button1
             // 
+            this.button1.BackColor = System.Drawing.Color.SeaShell;
+            this.button1.Image = ((System.Drawing.Image)(resources.GetObject("button1.Image")));
             this.button1.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.button1.Location = new System.Drawing.Point(1222, 62);
+            this.button1.Location = new System.Drawing.Point(1222, 40);
             this.button1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(174, 127);
+            this.button1.Size = new System.Drawing.Size(174, 180);
             this.button1.TabIndex = 3;
             this.button1.Text = "Color de Palabras Reservadas";
             this.button1.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.button1.UseVisualStyleBackColor = true;
+            this.button1.UseVisualStyleBackColor = false;
             // 
             // tabControl1
             // 
@@ -109,31 +113,36 @@
             // 
             // button3
             // 
+            this.button3.BackColor = System.Drawing.Color.SeaShell;
+            this.button3.Image = ((System.Drawing.Image)(resources.GetObject("button3.Image")));
             this.button3.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.button3.Location = new System.Drawing.Point(1222, 198);
+            this.button3.Location = new System.Drawing.Point(1222, 228);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(174, 127);
+            this.button3.Size = new System.Drawing.Size(174, 190);
             this.button3.TabIndex = 6;
             this.button3.Text = "Color de los Comentarios";
             this.button3.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.button3.UseVisualStyleBackColor = true;
+            this.button3.UseVisualStyleBackColor = false;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // button4
             // 
+            this.button4.BackColor = System.Drawing.Color.SeaShell;
+            this.button4.Image = ((System.Drawing.Image)(resources.GetObject("button4.Image")));
             this.button4.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.button4.Location = new System.Drawing.Point(1222, 331);
+            this.button4.Location = new System.Drawing.Point(1222, 424);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(174, 127);
+            this.button4.Size = new System.Drawing.Size(174, 184);
             this.button4.TabIndex = 7;
             this.button4.Text = "Color de las cadenas de texto";
             this.button4.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.button4.UseVisualStyleBackColor = true;
+            this.button4.UseVisualStyleBackColor = false;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.PeachPuff;
             this.ClientSize = new System.Drawing.Size(1452, 689);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.button3);
@@ -142,10 +151,11 @@
             this.Controls.Add(this.button1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Editor de Codigo de Pascal";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();

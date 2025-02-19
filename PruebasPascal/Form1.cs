@@ -16,31 +16,64 @@ namespace PruebasPascal
     {
         private ToolStripStatusLabel wordCountLabel;
         private ToolStripStatusLabel lineCountLabel;
+        private ToolStripStatusLabel numeroHector;
+        private ToolStripStatusLabel numeroAntonio;
+        IndentationDrawer indentador;
+
         private int tabCounter = 1;
 
         public Form1()
         {
             InitializeComponent();
+            tabControl1.SelectedIndexChanged += TabControl1_SelectedIndexChanged;
+
+            menuStrip1.Renderer = new CustomMenuRenderer();
 
             // Crear las etiquetas de conteo de palabras y líneas
             wordCountLabel = new ToolStripStatusLabel();
             lineCountLabel = new ToolStripStatusLabel();
+            numeroHector = new ToolStripStatusLabel();
+            numeroAntonio = new ToolStripStatusLabel();
 
             // Añadir las etiquetas al StatusStrip
             statusStrip1.Items.Add(wordCountLabel);
             statusStrip1.Items.Add(lineCountLabel);
+            statusStrip1.Items.Add(numeroHector);
+            statusStrip1.Items.Add(numeroAntonio);
 
             sadasdasdToolStripMenuItem.Click += menuAbrir_Click;
             tabControl1.DrawMode = TabDrawMode.OwnerDrawFixed;
             tabControl1.DrawItem += TabControl1_DrawItem;
             tabControl1.MouseDown += TabControl1_MouseDown;
 
-
             button1.Click += (s, e) => SeleccionarColor("reservadas");
             button3.Click += (s, e) => SeleccionarColor("comentarios");
             button4.Click += (s, e) => SeleccionarColor("cadenas");
+
+            // Crear una pestaña antes de asignar el indentador
             CrearNuevaPestaña();
+
+            // Ahora sí, asignar el indentador a la pestaña creada
+            AsignarIndentadorATabActiva();
         }
+
+        private void TabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            AsignarIndentadorATabActiva();
+        }
+
+        private void AsignarIndentadorATabActiva()
+        {
+            if (tabControl1.SelectedTab != null && tabControl1.SelectedTab.Controls.Count > 0)
+            {
+                RichTextBox rtb = tabControl1.SelectedTab.Controls[0] as RichTextBox;
+                if (rtb != null)
+                {
+                    indentador = new IndentationDrawer(rtb);
+                }
+            }
+        }
+
         private void SeleccionarColor(string tipo)
         {
             if (tabControl1.SelectedTab == null) return;
@@ -60,46 +93,60 @@ namespace PruebasPascal
 
         private void AplicarResaltado(RichTextBox rtb)
         {
+            if (tabControl1.SelectedTab == null) return;
+
             ColorConfig config = (ColorConfig)tabControl1.SelectedTab.Tag;
 
-            // Palabras reservadas
-            string[] palabrasReservadas = { "program", "begin", "end", "var", "if", "then", "else", "while", "do", "procedure", "function" };
-            Regex regexReservadas = new Regex($@"\b({string.Join("|", palabrasReservadas)})\b", RegexOptions.IgnoreCase);
+            string[] palabrasReservadas = {
+        "absolute", "and", "array", "asm", "begin", "case", "const", "constructor",
+        "destructor", "div", "do", "downto", "else", "end", "external", "false",
+        "file", "for", "forward", "function", "goto", "if", "implementation", "in",
+        "inline", "interface", "label", "mod", "nil", "not", "object", "of", "on",
+        "operator", "or", "packed", "procedure", "program", "record", "repeat",
+        "set", "shl", "shr", "string", "then", "to", "true", "type", "unit", "until",
+        "uses", "var", "while", "with", "xor"
+    };
 
-            // Comentarios
+            Regex regexReservadas = new Regex($"\\b({string.Join("|", palabrasReservadas)})\\b", RegexOptions.IgnoreCase);
             Regex regexComentarios = new Regex(@"(\{.*?\}|//.*?$)", RegexOptions.Multiline);
-
-            // Cadenas de texto
             Regex regexCadenas = new Regex(@"'([^']*)'", RegexOptions.Singleline);
 
             int selStart = rtb.SelectionStart;
-            rtb.SelectAll();
+            int selLength = rtb.SelectionLength;
+
+            rtb.SuspendLayout();
+
+            // Restaurar todo el texto a color negro antes de aplicar los resaltados
+            rtb.Select(0, rtb.Text.Length);
             rtb.SelectionColor = Color.Black;
 
-            // Resaltar las palabras reservadas
+            // Aplicar color a palabras reservadas
             foreach (Match m in regexReservadas.Matches(rtb.Text))
             {
                 rtb.Select(m.Index, m.Length);
                 rtb.SelectionColor = config.Reservadas;
             }
 
-            // Resaltar los comentarios
+            // Aplicar color a comentarios
             foreach (Match m in regexComentarios.Matches(rtb.Text))
             {
                 rtb.Select(m.Index, m.Length);
                 rtb.SelectionColor = config.Comentarios;
             }
 
-            // Resaltar las cadenas de texto
+            // Aplicar color a cadenas de texto
             foreach (Match m in regexCadenas.Matches(rtb.Text))
             {
                 rtb.Select(m.Index, m.Length);
                 rtb.SelectionColor = config.Cadenas;
             }
 
+            // Restaurar la posición del cursor y establecer el color negro para seguir escribiendo correctamente
             rtb.SelectionStart = selStart;
             rtb.SelectionLength = 0;
-            rtb.SelectionColor = Color.Black;
+            rtb.SelectionColor = Color.Black; // Esto es clave para que el texto nuevo sea negro
+
+            rtb.ResumeLayout();
         }
 
         class ColorConfig
@@ -199,6 +246,9 @@ namespace PruebasPascal
 
             wordCountLabel.Text = $"Palabras: {wordCount}";
             lineCountLabel.Text = $"Líneas: {lineCount}";
+
+            numeroHector.Text = "23310624";
+            numeroAntonio.Text = "23310627";
         }
 
         private void sadasdasdToolStripMenuItem_Click(object sender, EventArgs e)
@@ -214,6 +264,22 @@ namespace PruebasPascal
         private void button2_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        public class CustomMenuRenderer : ToolStripProfessionalRenderer
+        {
+            protected override void OnRenderMenuItemBackground(ToolStripItemRenderEventArgs e)
+            {
+                if (e.Item.Selected) // Si el mouse está sobre el ítem
+                {
+                    e.Graphics.FillRectangle(new SolidBrush(Color.LightGreen), e.Item.ContentRectangle); // Color personalizado
+                    e.Item.ForeColor = Color.Black; // Cambia el color del texto si es necesario
+                }
+                else
+                {
+                    base.OnRenderMenuItemBackground(e); // Usa el renderizado predeterminado si no está seleccionado
+                }
+            }
         }
     }
 }
